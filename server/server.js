@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes')
 const waterBodyRoutes = require('./routes/waterBodyRoutes')
 const deviceRoutes = require('./routes/deviceRoutes')
 const deviceIngressRoutes = require('./routes/deviceIngressRoutes')
+const readingRoutes = require('./routes/readingRoutes')
 const app = express()
 
 app.use(cors({
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/water-bodies', waterBodyRoutes)
 app.use('/api/devices', deviceRoutes)
 app.use('/api/device', deviceIngressRoutes)
+app.use('/api/readings', readingRoutes)
 app.use('/api/water-bodies', waterBodyRoutes)
 app.get('/api/health', (req, res) => {
   res.json({
