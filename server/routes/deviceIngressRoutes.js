@@ -1,5 +1,6 @@
 const express = require('express')
 const authenticateDevice = require('../middleware/deviceAuthMiddleware')
+const receiveTelemetry = require('../controllers/telemetryController')
 
 const router = express.Router()
 
@@ -11,5 +12,8 @@ router.post('/heartbeat', authenticateDevice, (req, res) => {
     lastSeen: req.device.lastSeen
   })
 })
+
+// Telemetry is validated and acknowledged but is not persisted in this feature.
+router.post('/telemetry', authenticateDevice, receiveTelemetry)
 
 module.exports = router
