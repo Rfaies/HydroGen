@@ -6,14 +6,15 @@ async function authenticateDevice(req, res, next) {
     const deviceId = req.headers['x-device-id']
     const credential = req.headers['x-device-key']
 
-    if (!deviceId || !credential) {
+    if (typeof deviceId !== 'string' || !deviceId.trim() ||
+        typeof credential !== 'string' || !credential) {
       return res.status(401).json({
         success: false,
         message: 'Device credentials are missing'
       })
     }
 
-    const device = await Device.findOne({ deviceId })
+    const device = await Device.findOne({ deviceId: deviceId.trim() })
       .select('+credentialHash')
 
     if (!device || !device.credentialHash) {

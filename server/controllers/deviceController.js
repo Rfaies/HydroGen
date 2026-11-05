@@ -15,6 +15,13 @@ async function registerDevice(req, res) {
       })
     }
 
+    if (typeof deviceId !== 'string' || !deviceId.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Device ID must be a non-empty string'
+      })
+    }
+
     // Check whether the water body belongs to this user
     const waterBody = await WaterBody.findOne({
       _id: waterBodyId,
@@ -87,9 +94,19 @@ async function getDevices(req, res) {
       waterBodyId: { $in: waterBodyIds }
     }).populate('waterBodyId', 'name')
 
+    const onlineCutoff = Date.now() - 2 * 60 * 1000
+    const devicesWithCurrentStatus = devices.map((device) => {
+      const deviceObject = device.toObject()
+      deviceObject.status = device.lastSeen &&
+        new Date(device.lastSeen).getTime() >= onlineCutoff
+        ? 'online'
+        : 'offline'
+      return deviceObject
+    })
+
     return res.json({
       success: true,
-      devices
+      devices: devicesWithCurrentStatus
     })
   } catch (error) {
     console.error('Get devices error:', error.message)
