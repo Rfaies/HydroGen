@@ -1,6 +1,7 @@
 const sensorFields = ['temperature', 'pH', 'salinity', 'ammonia']
+const Reading = require('../models/Reading')
 
-function receiveTelemetry(req, res) {
+async function receiveTelemetry(req, res) {
   const body = req.body
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -41,11 +42,33 @@ function receiveTelemetry(req, res) {
     })
   }
 
-  return res.status(200).json({
+  const recordedAt = new Date()
+  let reading
+
+  try {
+    reading = await Reading.create({
+      deviceId: req.device.deviceId,
+      waterBodyId: req.device.waterBodyId,
+      temperature: body.temperature,
+      pH: body.pH,
+      salinity: body.salinity,
+      ammonia: body.ammonia,
+      recordedAt
+    })
+  } catch (error) {
+    console.error('Sensor telemetry persistence failed')
+    return res.status(500).json({
+      success: false,
+      message: 'Could not save sensor telemetry'
+    })
+  }
+
+  return res.status(201).json({
     success: true,
-    message: 'Sensor telemetry accepted',
-    deviceId: req.device.deviceId,
-    waterBodyId: req.device.waterBodyId,
+    message: 'Sensor telemetry saved',
+    deviceId: reading.deviceId,
+    waterBodyId: reading.waterBodyId,
+    recordedAt: reading.recordedAt,
     telemetry: {
       temperature: body.temperature,
       pH: body.pH,

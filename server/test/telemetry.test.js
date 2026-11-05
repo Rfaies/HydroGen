@@ -4,6 +4,7 @@ const crypto = require('node:crypto')
 const express = require('express')
 const http = require('node:http')
 const Device = require('../models/Device')
+const Reading = require('../models/Reading')
 const deviceIngressRoutes = require('../routes/deviceIngressRoutes')
 const receiveTelemetry = require('../controllers/telemetryController')
 
@@ -60,25 +61,46 @@ function responseRecorder() {
   }
 }
 
-test('authenticated telemetry is accepted and body identity cannot spoof assigned identity', async (t) => {
+test('authenticated telemetry is saved with authenticated identity, sensor values and server time', async (t) => {
   const credential = 'telemetry-secret'
   const device = makeDevice(credential)
+  let savedReading
   t.mock.method(Device, 'findOne', () => ({ select: async () => device }))
+  t.mock.method(Reading, 'create', async (document) => {
+    savedReading = document
+    return document
+  })
   const baseUrl = await startTestServer(t)
 
+  const beforeRequest = Date.now()
   const response = await postJson(baseUrl, '/api/device/telemetry', {
     temperature: 23.5,
     pH: 7.2,
     salinity: 0.4,
     ammonia: 0.08,
     deviceId: 'spoofed-device',
-    waterBodyId: 'spoofed-body'
+    waterBodyId: 'spoofed-body',
+    recordedAt: '2000-01-01T00:00:00.000Z'
   }, { 'x-device-id': device.deviceId, 'x-device-key': credential })
+  const afterRequest = Date.now()
 
-  assert.equal(response.status, 200)
+  assert.equal(response.status, 201)
   assert.equal(response.body.success, true)
   assert.equal(response.body.deviceId, 'glob-assigned')
   assert.equal(response.body.waterBodyId, 'body-assigned')
+  assert.deepEqual(savedReading, {
+    deviceId: 'glob-assigned',
+    waterBodyId: 'body-assigned',
+    temperature: 23.5,
+    pH: 7.2,
+    salinity: 0.4,
+    ammonia: 0.08,
+    recordedAt: savedReading.recordedAt
+  })
+  assert.ok(savedReading.recordedAt instanceof Date)
+  assert.ok(savedReading.recordedAt.getTime() >= beforeRequest)
+  assert.ok(savedReading.recordedAt.getTime() <= afterRequest)
+  assert.notEqual(savedReading.recordedAt.toISOString(), '2000-01-01T00:00:00.000Z')
   assert.deepEqual(response.body.telemetry, {
     temperature: 23.5,
     pH: 7.2,
@@ -93,6 +115,7 @@ test('authenticated telemetry is accepted and body identity cannot spoof assigne
 test('telemetry endpoint rejects missing and incorrect device credentials', async (t) => {
   const device = makeDevice()
   t.mock.method(Device, 'findOne', () => ({ select: async () => device }))
+  const createReading = t.mock.method(Reading, 'create', async (document) => document)
   const baseUrl = await startTestServer(t)
   const payload = { temperature: 20, pH: 7, salinity: 0, ammonia: 0 }
 
@@ -104,9 +127,11 @@ test('telemetry endpoint rejects missing and incorrect device credentials', asyn
 
   assert.equal(missing.status, 401)
   assert.equal(incorrect.status, 401)
+  assert.equal(createReading.mock.callCount(), 0)
 })
 
-test('telemetry validation rejects missing, non-numeric, non-finite and out-of-range values', () => {
+test('telemetry validation rejects missing, non-numeric, non-finite and out-of-range values without saving', async (t) => {
+  const createReading = t.mock.method(Reading, 'create', async (document) => document)
   const device = { deviceId: 'trusted-device', waterBodyId: 'trusted-body' }
   const base = { temperature: 20, pH: 7, salinity: 0, ammonia: 0 }
   const missingTemperature = Object.fromEntries(
@@ -125,21 +150,39 @@ test('telemetry validation rejects missing, non-numeric, non-finite and out-of-r
 
   for (const payload of invalidPayloads) {
     const res = responseRecorder()
-    receiveTelemetry({ body: payload, device }, res)
+    await receiveTelemetry({ body: payload, device }, res)
     assert.equal(res.statusCode, 400, JSON.stringify(payload))
     assert.equal(res.body.success, false)
     assert.ok(Array.isArray(res.body.errors))
   }
+  assert.equal(createReading.mock.callCount(), 0)
 })
 
-test('telemetry accepts boundary values and ignores unsupported extra fields', () => {
+test('telemetry persistence failure returns 500 instead of success', async (t) => {
+  t.mock.method(Reading, 'create', async () => {
+    throw new Error('private database failure detail')
+  })
   const res = responseRecorder()
-  receiveTelemetry({
+  await receiveTelemetry({
+    device: { deviceId: 'trusted-device', waterBodyId: 'trusted-body' },
+    body: { temperature: 22, pH: 7, salinity: 0, ammonia: 0 }
+  }, res)
+
+  assert.equal(res.statusCode, 500)
+  assert.equal(res.body.success, false)
+  assert.equal(res.body.message, 'Could not save sensor telemetry')
+  assert.equal(JSON.stringify(res.body).includes('private database failure detail'), false)
+})
+
+test('telemetry accepts boundary values and ignores unsupported extra fields', async (t) => {
+  t.mock.method(Reading, 'create', async (document) => document)
+  const res = responseRecorder()
+  await receiveTelemetry({
     device: { deviceId: 'trusted-device', waterBodyId: 'trusted-body' },
     body: { temperature: -500, pH: 14, salinity: 0, ammonia: 0, extra: 'ignored' }
   }, res)
 
-  assert.equal(res.statusCode, 200)
+  assert.equal(res.statusCode, 201)
   assert.equal(res.body.telemetry.temperature, -500)
   assert.equal(res.body.telemetry.pH, 14)
   assert.equal('extra' in res.body.telemetry, false)
