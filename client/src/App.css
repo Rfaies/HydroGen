@@ -1,0 +1,634 @@
+
+/* Main login page */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F5F5EF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  color: #303833;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Login container */
+
+.login-container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 510px;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E8E1;
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Brand */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #183D32;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.brand-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #183D32;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Login content */
+
+.login-content {
+  margin-top: 55px;
+  margin-bottom: 55px;
+}
+
+.eyebrow {
+  color: #708477;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  margin-bottom: 17px;
+}
+
+.login-content h1 {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -1.2px;
+  color: #183D32;
+  margin-bottom: 13px;
+}
+
+.login-description {
+  color: #747C75;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+/* Google button */
+
+.google-button {
+  width: 100%;
+  height: 49px;
+  background-color: #FFFFFF;
+  border: 1px solid #D9DED8;
+  color: #303833;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.google-button:hover {
+  background-color: #F5F7F3;
+}
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.privacy-note {
+  margin-top: 19px;
+  text-align: center;
+  font-size: 12px;
+  color: #929A92;
+}
+
+/* Footer */
+
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid #E9ECE7;
+  padding-top: 19px;
+  font-size: 11px;
+  color: #929A92;
+}
+
+.login-footer span:first-child {
+  color: #183D32;
+  font-weight: 700;
+}
+
+/* Mobile responsive */
+/* Tablet and mobile */
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 24px 16px;
+    align-items: center;
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 430px;
+    min-height: auto;
+    padding: 36px 28px;
+  }
+
+  .login-content {
+    margin-top: 55px;
+    margin-bottom: 55px;
+  }
+
+  .login-content h1 {
+    font-size: 30px;
+  }
+
+  .login-description {
+    font-size: 14px;
+  }
+
+  .login-footer {
+    padding-top: 18px;
+  }
+}
+
+/* Small mobile screens */
+
+@media (max-width: 380px) {
+  .login-page {
+    padding: 16px 12px;
+  }
+
+  .login-container {
+    padding: 28px 20px;
+  }
+
+  .brand {
+    font-size: 21px;
+  }
+
+  .login-content {
+    margin-top: 42px;
+    margin-bottom: 42px;
+  }
+
+  .login-content h1 {
+    font-size: 27px;
+  }
+
+  .google-button {
+    font-size: 13px;
+    gap: 9px;
+  }
+}
+/* Keyboard accessibility */
+
+.google-button:focus-visible {
+  outline: 3px solid #A7B9A5;
+  outline-offset: 3px;
+}
+/* Google Identity Services button */
+.google-button-slot {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 28px;
+}
+
+.google-button-slot > div {
+  max-width: 100%;
+}
+
+.login-error {
+  color: #B42318;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+/* =================================
+   WATER BODIES PAGE
+================================= */
+
+.water-bodies-page {
+  min-height: 100vh;
+  background: #EDF1EA;
+  color: #303833;
+  padding: 64px 8%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.water-bodies-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #DDE2D9;
+}
+
+.water-bodies-eyebrow {
+  color: #708477;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+  margin-bottom: 15px;
+}
+
+.water-bodies-header h1 {
+  color: #183D32;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -1.1px;
+  margin-bottom: 10px;
+}
+
+.water-bodies-description {
+  color: #747C75;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.water-body-count {
+  color: #52685B;
+  font-size: 13px;
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+
+.water-body-form-section,
+.registered-water-section {
+  max-width: 900px;
+  margin-top: 64px;
+}
+
+.section-heading {
+  margin-bottom: 23px;
+}
+
+.section-heading h2 {
+  color: #183D32;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin-bottom: 8px;
+}
+
+.section-heading p {
+  color: #7A827A;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.water-body-form {
+  background: #FFFFFF;
+  border: 1px solid #E1E5DD;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-field label {
+  color: #39463E;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: #FFFFFF;
+  border: 1px solid #D9DED6;
+  border-radius: 2px;
+  color: #303833;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #526F5D;
+  box-shadow: 0 0 0 2px rgba(82, 111, 93, 0.12);
+}
+
+.form-field input::placeholder {
+  color: #A0A69F;
+}
+
+.water-submit-button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-height: 43px;
+  padding: 0 21px;
+  border: 1px solid #183D32;
+  background: #183D32;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.water-submit-button:hover:not(:disabled) {
+  background: #285343;
+}
+
+.water-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.water-form-error,
+.water-state-error {
+  color: #B42318;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.water-form-error {
+  grid-column: 1 / -1;
+}
+
+.water-state-message {
+  color: #747C75;
+  font-size: 13px;
+  padding: 18px 0;
+}
+
+.water-empty-state {
+  background: #FFFFFF;
+  border: 1px solid #E1E5DD;
+  padding: 30px;
+}
+
+.water-empty-state h3 {
+  color: #39463E;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+
+.water-empty-state p {
+  color: #858C84;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.water-body-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #DDE2D9;
+}
+
+.water-body-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 21px 18px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E1E5DD;
+}
+
+.water-body-item h3 {
+  color: #303833;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.water-body-item p {
+  color: #858C84;
+  font-size: 12px;
+}
+
+.water-type-label {
+  color: #52685B;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Keyboard accessibility */
+
+.water-submit-button:focus-visible {
+  outline: 3px solid #A7B9A5;
+  outline-offset: 3px;
+}
+
+/* Responsive layout */
+
+@media (max-width: 700px) {
+  .water-bodies-page {
+    padding: 38px 22px;
+  }
+
+  .water-bodies-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .water-bodies-header h1 {
+    font-size: 29px;
+  }
+
+  .water-body-form {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .water-submit-button {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .water-form-error {
+    grid-column: 1;
+  }
+
+  .water-body-item {
+    padding: 18px 13px;
+  }
+}
+/* Water body actions */
+
+.water-body-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.water-edit-button {
+  padding: 7px 15px;
+  border: 1px solid #D9DED6;
+  background: #FFFFFF;
+  color: #183D32;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.water-edit-button:hover {
+  background: #F0F3ED;
+}
+
+.water-edit-button:focus-visible {
+  outline: 3px solid #A7B9A5;
+  outline-offset: 3px;
+}
+/* =================================
+   DEVICE REGISTRATION
+================================= */
+
+.device-registration-section {
+  max-width: 900px;
+  margin-top: 64px;
+}
+
+.device-registration-form {
+  background: #FFFFFF;
+  border: 1px solid #E1E5DD;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.device-form-error {
+  grid-column: 1 / -1;
+  color: #B42318;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.device-registration-form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+@media (max-width: 700px) {
+  .device-registration-form {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .device-form-error {
+    grid-column: 1;
+  }
+
+  .device-registration-form button {
+    width: 100%;
+  }
+}
+/* =================================
+   DEVICE CREDENTIAL DISPLAY
+================================= */
+
+.device-credential-box {
+  max-width: 900px;
+  margin-top: 24px;
+  padding: 24px;
+  background: #F5F5EF;
+  border: 1px solid #A7B9A5;
+}
+
+.device-credential-box h3 {
+  margin: 0 0 10px;
+  color: #183D32;
+  font-size: 18px;
+}
+
+.device-credential-box p {
+  margin: 0 0 16px;
+  color: #59645D;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.device-credential-box code {
+  display: block;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: #FFFFFF;
+  border: 1px solid #E1E5DD;
+  color: #303833;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.device-credential-box button {
+  margin-right: 10px;
+  padding: 10px 16px;
+  border: 1px solid #183D32;
+  background: #183D32;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.device-credential-box button:last-child {
+  background: #FFFFFF;
+  color: #183D32;
+}
+
+@media (max-width: 600px) {
+  .device-credential-box {
+    padding: 18px;
+  }
+
+  .device-credential-box button {
+    margin: 0 8px 8px 0;
+  }
+}
+/* =================================
+   WATER BODY DEVICE INFORMATION
+================================= */
+
+.water-device-info {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #F5F5EF;
+  border-left: 3px solid #A7B9A5;
+}
+
+.water-device-info p {
+  margin: 4px 0;
+  color: #59645D;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.water-device-info p:first-child {
+  color: #183D32;
+  font-weight: 600;
+}
